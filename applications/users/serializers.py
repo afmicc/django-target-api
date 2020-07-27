@@ -9,7 +9,7 @@ from applications.users.models import User
 class UserSerializer(UserDetailsSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'name', 'gender', ]
+        fields = ['id', 'email', 'name', 'gender', 'picture', ]
         read_only_fields = ['email', ]
 
 

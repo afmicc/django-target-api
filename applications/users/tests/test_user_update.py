@@ -31,7 +31,7 @@ class UserFieldsUpdateTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
             [key for key in response.json()],
-            ['id', 'email', 'name', 'gender', ]
+            ['id', 'email', 'name', 'gender', 'picture', ]
         )
 
     def test_all_params_valid_save_data(self):
@@ -78,3 +78,21 @@ class UserFieldsUpdateTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+    def generate_photo_file(self):
+        file = io.BytesIO()
+        image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
+        image.save(file, 'png')
+        file.name = 'test.png'
+        file.seek(0)
+        return file
+
+    def test_upload_user_picture_respond_success_and_store(self):
+        self.assertIsNone(self.user.picture.name)
+
+        self.client.force_authenticate(user=self.user)
+        data = {'picture': self.generate_photo_file()}
+        response = self.client.put(self.url, data, format='multipart')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNotNone(response.json()['picture'])
+        self.assertIsNotNone(self.user.picture.name)
