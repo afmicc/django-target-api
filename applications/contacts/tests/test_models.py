@@ -3,9 +3,9 @@ from django.test import TestCase
 from .factories import ContactFactory
 
 
-class UserModelTests(TestCase):
+class ContactModelTests(TestCase):
     def setUp(self):
-        self.user = ContactFactory()
+        self.contact = ContactFactory()
 
     def test_to_string_displays_email(self):
-        self.assertEqual(self.user.email, str(self.user))
+        self.assertEqual(self.contact.email, str(self.contact))

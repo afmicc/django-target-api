@@ -4,8 +4,8 @@ from applications.users.models import User
 
 
 class Contact(models.Model):
-    email = models.EmailField(blank=False, null=False)
-    message = models.TextField(max_length=500, blank=False, null=False)
+    email = models.EmailField(null=False)
+    message = models.TextField(max_length=500, null=False)
     writer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

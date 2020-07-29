@@ -25,7 +25,7 @@ class ContactCreateTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertCountEqual(
             [key for key in response.json()],
-            ['id', 'email', 'message', 'writer', ]
+            ['email', 'message', 'writer', ]
         )
 
     def test_all_params_valid_save_data(self):
