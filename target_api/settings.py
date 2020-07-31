@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'api',
     'applications.users',
     'applications.targets',
+    'applications.notifications',
 ]
 
 MIDDLEWARE = [
