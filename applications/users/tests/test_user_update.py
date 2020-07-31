@@ -7,6 +7,7 @@ from rest_framework.test import APITestCase
 from rest_framework.views import status
 
 from .factories import BaseUserFactory, UserFactory
+from applications.users.models import User
 
 
 class UserFieldsUpdateTests(APITestCase):
@@ -25,6 +26,9 @@ class UserFieldsUpdateTests(APITestCase):
         self.client.force_authenticate(user=self.user)
         return self.client.put(self.url, self.params)
 
+    def get_user(self):
+        return User.objects.get(email=self.user.email)
+
     def test_all_params_valid_respond_success(self):
         response = self.call_update()
 
@@ -38,9 +42,11 @@ class UserFieldsUpdateTests(APITestCase):
         response = self.call_update()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(self.params['email'], self.user.email)
-        self.assertEqual(self.params['name'], self.user.name)
-        self.assertEqual(self.params['gender'], self.user.gender)
+
+        user = self.get_user()
+        self.assertEqual(self.params['email'], user.email)
+        self.assertEqual(self.params['name'], user.name)
+        self.assertEqual(self.params['gender'], user.gender)
 
     def test_all_params_valid_change_data(self):
         prev_email = self.user.email
@@ -54,23 +60,23 @@ class UserFieldsUpdateTests(APITestCase):
         self.assertNotEqual(self.params['name'], prev_name)
         self.assertNotEqual(self.params['gender'], prev_gender)
 
-    def test_missing_name_repond_success_and_not_change_data(self):
+    def test_missing_name_respond_success_and_not_change_data(self):
         prev_name = self.user.name
         del self.params['name']
 
         response = self.call_update()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(self.user.name, prev_name)
+        self.assertEqual(self.get_user().name, prev_name)
 
-    def test_missing_gender_repond_success_and_not_change_data(self):
+    def test_missing_gender_respond_success_and_not_change_data(self):
         prev_gender = self.user.gender
         del self.params['gender']
 
         response = self.call_update()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(self.user.gender, prev_gender)
+        self.assertEqual(self.get_user().gender, prev_gender)
 
     def test_no_loged_user_respond_unauthorized(self):
         self.user = None
@@ -95,4 +101,4 @@ class UserFieldsUpdateTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsNotNone(response.json()['picture'])
-        self.assertIsNotNone(self.user.picture.name)
+        self.assertIsNotNone(self.get_user().picture.name)
