@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+from django.db.models import F
 
 from applications.users.models import User
 
@@ -24,6 +25,18 @@ class Target(models.Model):
 
     def __str__(self):
         return self.title
+
+    def compatible_query(self):
+        return Target.objects.filter(
+            topic_id=self.topic_id,
+        ).exclude(
+            owner_id=self.owner_id,
+        ).annotate(
+            distance=models.functions.Distance('location', self.location),
+            radius_sum=((F('radius') + self.radius) * 1000),
+        ).filter(
+            distance__lte=(F('radius_sum'))
+        )
 
     class Meta:
         ordering = ['title']
