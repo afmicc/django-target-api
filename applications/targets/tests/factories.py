@@ -36,17 +36,22 @@ class TargetFactory(factory.django.DjangoModelFactory):
         kwargs['location'] = Point(latitude, longitude)
         return super(TargetFactory, cls)._create(model_class, *args, **kwargs)
 
+    class Params:
+        rootstrap_office = factory.Trait(
+            title='Rootstrap office',
+            latitude=-34.9071206,
+            longitude=-56.2011391,
+            radius=4,
+        )
+
 
 def default_target(user, topic):
     '''
         Rootstrap office
     '''
     return TargetFactory(
+        rootstrap_office=True,
         owner=user,
-        title='Rootstrap office',
-        latitude=-34.9071206,
-        longitude=-56.2011391,
-        radius=4,
         topic=topic,
     )
 
