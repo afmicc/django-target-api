@@ -153,10 +153,10 @@ class TargetCreateTest(APITestCase):
         response = self.call_create_target()
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Target.objects.filter(owner=self.user).count(), 1)
+        self.assertEqual(self.user.target_set.count(), 1)
 
-        self.assertEqual(Notification.objects.filter(user=self.user).count(), 1)
-        self.assertEqual(Notification.objects.filter(user=matching_target.owner).count(), 1)
+        self.assertEqual(self.user.notification_set.count(), 1)
+        self.assertEqual(matching_target.owner.notification_set.count(), 1)
 
         self.assertEqual(notificator.call_count, 2)
 
@@ -177,8 +177,8 @@ class TargetCreateTest(APITestCase):
         response = self.call_create_target()
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Target.objects.filter(owner=self.user).count(), 1)
+        self.assertEqual(self.user.target_set.count(), 1)
 
-        self.assertEqual(Notification.objects.filter(user=self.user).count(), 0)
+        self.assertEqual(self.user.notification_set.count(), 0)
 
         self.assertEqual(notificator.call_count, 0)

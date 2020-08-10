@@ -46,9 +46,7 @@ class TargetFactory(factory.django.DjangoModelFactory):
 
 
 def default_target(user, topic):
-    '''
-        Rootstrap office
-    '''
+    """Rootstrap office"""
     return TargetFactory(
         rootstrap_office=True,
         owner=user,
@@ -57,11 +55,11 @@ def default_target(user, topic):
 
 
 def compatible_in_radius_target(topic):
-    '''
-        Montenvideo Shopping
-        Distance: 7km
-        Compatible: Yes
-    '''
+    """
+    Montenvideo Shopping
+    Distance: 7km
+    Compatible: Yes
+    """
     return TargetFactory(
         title='Montenvideo Shopping',
         latitude=-34.9036534,
@@ -72,11 +70,11 @@ def compatible_in_radius_target(topic):
 
 
 def compatible_in_radius_target2(topic):
-    '''
-        Nuevocentro Shopping
-        Distance: 4.13 km
-        Compatible: Yes
-    '''
+    """
+    Nuevocentro Shopping
+    Distance: 4.13 km
+    Compatible: Yes
+    """
     return TargetFactory(
         title='Nuevocentro Shopping',
         latitude=-34.8756006,
@@ -87,11 +85,11 @@ def compatible_in_radius_target2(topic):
 
 
 def incompatible_in_radius_target(other_topic):
-    '''
-        Rural del Prado
-        Distance: 4.09 km
-        Compatible: No, different topic
-    '''
+    """
+    Rural del Prado
+    Distance: 4.09 km
+    Compatible: No, different topic
+    """
     return TargetFactory(
         title='Rural del Prado',
         latitude=-34.8719561,
@@ -102,11 +100,11 @@ def incompatible_in_radius_target(other_topic):
 
 
 def compatible_out_radius_target(topic):
-    '''
-        Portones Shopping
-        Distance: 11.3 km
-        Compatible: No, out of range
-    '''
+    """
+    Portones Shopping
+    Distance: 11.3 km
+    Compatible: No, out of range
+    """
     return TargetFactory(
         title='Portones Shopping',
         latitude=-34.8811386,
