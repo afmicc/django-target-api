@@ -24,13 +24,13 @@ class NotificationSender(object):
     def _create_filter_by_emails(self, emails):
         email_list = emails if type(emails) is list else [emails]
 
-        def email_filter(email):
-            return {'field': 'tag', 'key': 'email', 'relation': '=', 'value': email}
+        return [self._filter_option(email_list, i) for i in range(len(email_list*2) - 1)]
 
-        def filter_option(i):
-            return email_filter(email_list[int(i/2)]) if i % 2 == 0 else {'operator': 'OR'}
+    def _filter_option(self, options, index):
+        return self._email_filter(options[int(index/2)]) if index % 2 == 0 else {'operator': 'OR'}
 
-        return [filter_option(i) for i in range(len(email_list*2) - 1)]
+    def _email_filter(self, email):
+        return {'field': 'tag', 'key': 'email', 'relation': '=', 'value': email}
 
 
 class NotificationCreator(object):
