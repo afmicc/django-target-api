@@ -41,26 +41,26 @@ class TargetMatchingServiceTest(TestCase):
             mock.call(
                 matching_target.owner,
                 {'target_id': self.target.id},
-                'You have a new match',
-                f'A {self.target.topic.name} target is near you: {self.target.title}',
+                TargetMatchingService.NOTIFICATION_TITLE,
+                TargetMatchingService.NOTIFICATION_BODY.format(self.target.topic.name, self.target.title),
             ),
             mock.call(
                 matching_target2.owner,
                 {'target_id': self.target.id},
-                'You have a new match',
-                f'A {self.target.topic.name} target is near you: {self.target.title}',
+                TargetMatchingService.NOTIFICATION_TITLE,
+                TargetMatchingService.NOTIFICATION_BODY.format(self.target.topic.name, self.target.title),
             ),
             mock.call(
                 self.user,
                 {'target_id': matching_target.id},
-                'You have a new match',
-                f'A {matching_target.topic.name} target is near you: {matching_target.title}',
+                TargetMatchingService.NOTIFICATION_TITLE,
+                TargetMatchingService.NOTIFICATION_BODY.format(matching_target.topic.name, matching_target.title),
             ),
             mock.call(
                 self.user,
                 {'target_id': matching_target2.id},
-                'You have a new match',
-                f'A {matching_target2.topic.name} target is near you: {matching_target2.title}',
+                TargetMatchingService.NOTIFICATION_TITLE,
+                TargetMatchingService.NOTIFICATION_BODY.format(matching_target2.topic.name, matching_target2.title),
             ),
         ]
         notificator.assert_has_calls(calls, any_order=True)

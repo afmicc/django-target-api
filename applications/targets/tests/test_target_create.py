@@ -5,7 +5,6 @@ from rest_framework.test import APITestCase
 from rest_framework.views import status
 
 from .factories import TargetFactory, TopicFactory, compatible_in_radius_target
-from applications.notifications.models import Notification
 from applications.users.tests.factories import UserFactory
 from applications.targets.models import Target
 

@@ -4,6 +4,9 @@ from applications.notifications.services import NotificationCreator
 
 
 class TargetMatchingService(object):
+    NOTIFICATION_TITLE = 'You have a new match'
+    NOTIFICATION_BODY = 'A {} target is near you: {}'
+
     notificator = NotificationCreator()
 
     def process_target(self, target):
@@ -15,7 +18,7 @@ class TargetMatchingService(object):
 
     def notificate_match(self, receiver, target):
         data = {'target_id': target.id}
-        title = _('You have a new match')
-        message = _(f'A {target.topic.name} target is near you: {target.title}')
+        title = _(self.NOTIFICATION_TITLE)
+        message = _(self.NOTIFICATION_BODY).format(target.topic.name, target.title)
 
         self.notificator.create(receiver, data, title, message)
