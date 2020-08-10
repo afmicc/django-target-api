@@ -13,8 +13,8 @@ class MessageListTest(APITestCase):
         self.receiver = UserFactory(confirmed=True)
         self.room = RoomFactory(members=[self.user, self.receiver])
 
-    def call_messages_list(self, rooom):
-        url = reverse('message-list', kwargs={'room': rooom.id})
+    def call_messages_list(self, rooom, page=1):
+        url = reverse('message-list', kwargs={'room': rooom.id}) + f'?page={page}'
         return self.client.get(url)
 
     def create_messages(self, count=2):
@@ -76,3 +76,22 @@ class MessageListTest(APITestCase):
         response = self.call_messages_list(self.room)
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_created_messages_returns_messages_paged(self):
+        page_size_1 = 10
+        page_size_2 = 7
+        messages_count = page_size_1 + page_size_2
+        self.create_messages(messages_count)
+
+        self.client.force_authenticate(user=self.user)
+        response = self.call_messages_list(self.room)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.get('count'), messages_count)
+        self.assertEqual(len(response.data.get('results')), page_size_1)
+
+        response = self.call_messages_list(self.room, 2)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.get('count'), messages_count)
+        self.assertEqual(len(response.data.get('results')), page_size_2)
