@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from .models import Room
 
 
-class RoomCreator(object):
+class RoomCreator:
 
     @transaction.atomic
     def create_from_target_match(self, target, *members):
