@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_gis',
     'corsheaders',
+    'channels',
 
     # project apps
     'api',
@@ -197,3 +198,13 @@ ACCOUNT_LOGOUT_ON_GET = True
 # CORS
 CORS_ORIGIN_ALLOW_ALL = True
 
+# Channels
+ASGI_APPLICATION = 'target_api.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
