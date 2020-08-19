@@ -22,6 +22,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
 
+    picture = models.ImageField(upload_to='users/pictures', blank=True, null=True)
+
     USERNAME_FIELD = 'email'
 
     objects = UserManager()

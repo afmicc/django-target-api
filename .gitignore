@@ -128,3 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 process.yml
+
+# temp files
+users/pictures

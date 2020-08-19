@@ -26,7 +26,7 @@ class BaseUserFactory(factory.django.DjangoModelFactory):
 
     email = factory.LazyFunction(fake.email)
     password = fake.password(length=8)
-    name = fake.name()
+    name = factory.LazyFunction(fake.name)
     gender = factory.Iterator(User.Gender.choices, getter=lambda x: x[0])
     is_active = True
 
