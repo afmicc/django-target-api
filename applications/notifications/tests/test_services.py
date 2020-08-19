@@ -37,7 +37,10 @@ class TestNotificationCreator(TestCase):
         'applications.notifications.services.NotificationSender.send_notification',
         side_effect=Exception
     )
-    def test_send_notification_raise_exception_do_not_store_notificaiton(self, send_notification):
+    def test_send_notification_raise_exception_do_not_store_notificaiton(
+        self,
+        send_notification,
+    ):
         with self.assertRaises(Exception):
             creator = NotificationCreator()
             creator.create(self.user, self.data, self.title, self.message)
