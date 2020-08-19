@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'applications.users',
     'applications.targets',
     'applications.notifications',
+    'applications.contacts',
 ]
 
 MIDDLEWARE = [

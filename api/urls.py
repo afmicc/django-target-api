@@ -6,4 +6,5 @@ urlpatterns = [
     path('account/', include('allauth.urls')),
 
     path('targets/', include('applications.targets.urls')),
+    path('contacts/', include('applications.contacts.urls')),
 ]
