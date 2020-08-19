@@ -8,7 +8,10 @@ env = environ.Env()
 
 
 class NotificationSender(object):
-    client = OneSignalClient(app_id=env('ONESIGNAL_APP_ID'), rest_api_key=env('ONESIGNAL_API_KEY'))
+    client = OneSignalClient(
+        app_id=env('ONESIGNAL_APP_ID'),
+        rest_api_key=env('ONESIGNAL_API_KEY'),
+    )
 
     def send_notification(self, emails, data, message):
         body = self._body(emails, data, message)
