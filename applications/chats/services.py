@@ -28,8 +28,5 @@ class RoomCreator:
         ).exists()
 
     def _validate_members(self, room, *members):
-        if len(members) < 2:
+        if len(members) != 2:
             raise ValidationError({'members': _('You must create a room with two members')})
-
-        if len(members) > 2:
-            raise ValidationError({'members': _('You can‘t create a room with more than two members')})
