@@ -32,6 +32,31 @@ class TestRoomCreator(TestCase):
             1
         )
 
+    def test_create_room_when_members_have_other_room_successfully(self):
+        RoomFactory(members=[UserFactory(), self.member_two], topic=self.target.topic)
+        RoomFactory(members=[self.member_one, UserFactory()], topic=self.target.topic)
+        self.assertEqual(Room.objects.count(), 2)
+        self.assertEqual(
+            Room.objects.filter(members__id=self.member_one.id, topic=self.target.topic).count(),
+            1
+        )
+        self.assertEqual(
+            Room.objects.filter(members__id=self.member_two.id, topic=self.target.topic).count(),
+            1
+        )
+
+        self.call_create_from_target_match(self.member_one, self.member_two)
+
+        self.assertEqual(Room.objects.count(), 3)
+        self.assertEqual(
+            Room.objects.filter(members__id=self.member_one.id, topic=self.target.topic).count(),
+            2
+        )
+        self.assertEqual(
+            Room.objects.filter(members__id=self.member_two.id, topic=self.target.topic).count(),
+            2
+        )
+
     def test_create_room_with_three_members_fail(self):
         new_user = UserFactory()
 
@@ -41,20 +66,17 @@ class TestRoomCreator(TestCase):
         self.assertIsNotNone(error)
         self.assertDictEqual(
             error.exception.message_dict,
-            {'members': ['You can‘t create a room with more than two members']}
+            {'members': ['You must create a room with two members']}
         )
-        self.assertEqual(Room.objects.count(), 0)
-        self.assertEqual(
-            Room.objects.filter(members__id=self.member_one.id, topic=self.target.topic).count(),
-            0
+        self.assertFalse(Room.objects.exists())
+        self.assertFalse(
+            Room.objects.filter(members__id=self.member_one.id, topic=self.target.topic).exists()
         )
-        self.assertEqual(
-            Room.objects.filter(members__id=self.member_two.id, topic=self.target.topic).count(),
-            0
+        self.assertFalse(
+            Room.objects.filter(members__id=self.member_two.id, topic=self.target.topic).exists()
         )
-        self.assertEqual(
-            Room.objects.filter(members__id=new_user.id, topic=self.target.topic).count(),
-            0
+        self.assertFalse(
+            Room.objects.filter(members__id=new_user.id, topic=self.target.topic).exists()
         )
 
     def test_create_room_with_one_members_fail(self):
@@ -66,10 +88,9 @@ class TestRoomCreator(TestCase):
             error.exception.message_dict,
             {'members': ['You must create a room with two members']}
         )
-        self.assertEqual(Room.objects.count(), 0)
-        self.assertEqual(
-            Room.objects.filter(members__id=self.member_one.id, topic=self.target.topic).count(),
-            0
+        self.assertFalse(Room.objects.exists())
+        self.assertFalse(
+            Room.objects.filter(members__id=self.member_one.id, topic=self.target.topic).exists()
         )
 
     def test_create_room_replicating_ignore(self):

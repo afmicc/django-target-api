@@ -178,6 +178,6 @@ class TargetCreateTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.user.target_set.count(), 1)
 
-        self.assertEqual(self.user.notification_set.count(), 0)
+        self.assertFalse(self.user.notification_set.all().exists())
 
         self.assertEqual(notificator.call_count, 0)
