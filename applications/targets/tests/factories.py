@@ -15,7 +15,7 @@ class TopicFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Topic
 
-    name = factory.LazyFunction(fake.word)
+    name = factory.Sequence(lambda n: 'topic%04d' % n)
 
 
 class TargetFactory(factory.django.DjangoModelFactory):
