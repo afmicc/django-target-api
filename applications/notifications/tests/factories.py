@@ -15,4 +15,4 @@ class NotificationFactory(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory(UserFactory)
     title = fake.text(max_nb_chars=20)
-    message = fake.text(max_nb_chars=50)
+    message = fake.text(max_nb_chars=200)
