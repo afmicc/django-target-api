@@ -8,6 +8,7 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(),
         name='password_reset_confirm',
     ),
+    path('auth/', include('applications.users.urls')),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
     path('account/', include('allauth.urls')),
 
