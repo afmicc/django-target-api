@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from rest_framework import mixins, viewsets
 
-# Create your views here.
+from .models import Content
+from .serializers import ContentSerializer
+
+
+class ContentViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    queryset = Content.objects.all()
+    lookup_field = 'key'
+    serializer_class = ContentSerializer

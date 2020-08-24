@@ -15,4 +15,5 @@ urlpatterns = [
     path('targets/', include('applications.targets.urls')),
     path('contacts/', include('applications.contacts.urls')),
     path('chats/', include('applications.chats.urls')),
+    path('contents/', include('applications.contents.urls')),
 ]
