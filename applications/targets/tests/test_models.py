@@ -21,7 +21,7 @@ class TargetModelTests(TestCase):
     def test_only_one_target_compatible_query_return_empty(self):
         target = factories.TargetFactory()
 
-        self.assertEqual(target.compatible_query().count(), 0)
+        self.assertFalse(target.compatible_query().exists())
 
     def test_same_user_targets_compatible_query_return_empty(self):
         user = UserFactory()
@@ -29,7 +29,7 @@ class TargetModelTests(TestCase):
         targets = factories.TargetFactory.create_batch(size=3, owner=user, topic=topic)
         target = targets[0]
 
-        self.assertEqual(target.compatible_query().count(), 0)
+        self.assertFalse(target.compatible_query().exists())
 
     def test_matching_targets_compatible_query_return_coincidenses(self):
         user = UserFactory()

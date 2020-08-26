@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
+from applications.chats.services import RoomCreator
 from applications.notifications.services import NotificationCreator
 
 
@@ -8,6 +9,7 @@ class TargetMatchingService(object):
     NOTIFICATION_BODY = 'A {} target is near you: {}'
 
     notificator = NotificationCreator()
+    room_creator = RoomCreator()
 
     def process_target(self, target):
         near_targets = target.compatible_query()
@@ -15,6 +17,8 @@ class TargetMatchingService(object):
         for near_target in near_targets:
             self.notificate_match(near_target.owner, target)
             self.notificate_match(target.owner, near_target)
+
+            self.room_creator.create_from_target_match(target, target.owner, near_target.owner)
 
     def notificate_match(self, receiver, target):
         data = {'target_id': target.id}

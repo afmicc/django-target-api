@@ -36,7 +36,7 @@ class NotificationSender(object):
         return {'field': 'tag', 'key': 'email', 'relation': '=', 'value': email}
 
 
-class NotificationCreator(object):
+class NotificationCreator:
     sender = NotificationSender()
 
     @transaction.atomic
