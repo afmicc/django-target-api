@@ -9,3 +9,14 @@ class Room(models.Model):
     members = models.ManyToManyField(User)
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Message(models.Model):
+    content = models.CharField(max_length=250)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    writer = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
