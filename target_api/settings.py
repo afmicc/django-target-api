@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     # external apps
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
     'django_extensions',
     'dj_rest_auth',
     'dj_rest_auth.registration',
@@ -208,3 +210,8 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+# Facebook Account
+SOCIAL_AUTH_FACEBOOK_KEY = env('FACEBOOK_APP_ID')
+SOCIAL_AUTH_FACEBOOK_SECRET = env('FACEBOOK_SECRET_KEY')
+SOCIAL_AUTH_FACEBOOK_CALLBACK_URL = env('FACEBOOK_CALLBACK_URL')
