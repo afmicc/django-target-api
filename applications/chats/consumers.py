@@ -7,17 +7,16 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
         self.user = self.scope['user']
         room_id = self.scope['url_route']['kwargs']['room']
+        self.room = await self._get_room(self.user, room_id)
+        self.room_group_name = f'chat_room_{room_id}'
 
-        if self.user.is_authenticated:
-            self.room = await self._get_room(self.user, room_id)
-            self.room_group_name = f'chat_room_{room_id}'
+        if self.user.is_authenticated and self.room:
+            await self.channel_layer.group_add(
+                self.room_group_name,
+                self.channel_name
+            )
 
-            if self.room:
-                await self.channel_layer.group_add(
-                    self.room_group_name,
-                    self.channel_name
-                )
-                await self.accept()
+            await self.accept()
         else:
             raise DenyConnection()
 
