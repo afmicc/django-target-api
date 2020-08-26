@@ -34,6 +34,11 @@ jobs:
           command: |
             . venv/bin/activate
             coverage run --omit=venv/* --source="." manage.py test
+      - run:
+          name: Running async tests
+          command: |
+            . venv/bin/activate
+            pytest applications/chats/tests/test_consumers.py
       # - run:
       #     name: Checking coverage
       #     command: |
