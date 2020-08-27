@@ -43,16 +43,18 @@ class MessageListTest(APITestCase):
         self.assertEqual(len(response.data.get('results')), messages_count)
         self.assertEqual(
             [key for key in response.json()['results'][0]],
-            ['content', 'room', 'writer', 'created_at', ]
+            ['id', 'room', 'writer', 'content', 'created_at', 'is_read', ]
         )
 
         messages.sort(key=(lambda x: x.created_at), reverse=True)
         response_data = [
             {
-                'content': m.content,
+                'id': m.id,
                 'room': m.room.id,
                 'writer': m.writer.name,
+                'content': m.content,
                 'created_at': m.created_at.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                'is_read': False,
             } for m in messages
         ]
         self.assertEqual(

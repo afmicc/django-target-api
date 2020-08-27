@@ -2,7 +2,7 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 from rest_framework.views import status
 
-from .factories import RoomFactory
+from .factories import MessageFactory, RoomFactory
 from applications.chats.models import Room
 from applications.users.tests.factories import UserFactory
 
@@ -44,11 +44,40 @@ class RoomListTest(APITestCase):
         self.assertEqual(len(response.data.get('results')), rooms_count)
         self.assertEqual(
             [key for key in response.json()['results'][0]],
-            ['id', 'created_at', 'topic', 'receiver', ]
+            ['id', 'topic', 'receiver', 'unread_message_count', 'created_at', ]
         )
         self.assertEqual(
             [key for key in response.json()['results'][0]['receiver']],
             ['id', 'email', 'name', 'gender', 'picture', ]
+        )
+
+    def test_created_room_returns_room_unread_message_count(self):
+        receiver = UserFactory(confirmed=True)
+        room = RoomFactory(members=[receiver, self.user])
+        message_count = 3
+        MessageFactory.create_batch(
+            message_count,
+            room=room,
+            writer=receiver,
+            is_read=True
+        )
+        MessageFactory.create_batch(
+            message_count,
+            room=room,
+            writer=receiver,
+            is_read=False
+        )
+
+        self.client.force_authenticate(user=self.user)
+        response = self.call_rooms_list()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.get('count'), 1)
+        self.assertEqual(len(response.data.get('results')), 1)
+        room_responsed = response.json()['results'][0]
+        self.assertEqual(
+            room_responsed['unread_message_count'],
+            message_count
         )
 
     def test_no_included_as_memeber_created_room_return_only_user_rooms(self):
