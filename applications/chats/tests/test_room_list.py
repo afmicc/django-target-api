@@ -55,18 +55,13 @@ class RoomListTest(APITestCase):
         receiver = UserFactory(confirmed=True)
         room = RoomFactory(members=[receiver, self.user])
         message_count = 3
-        MessageFactory.create_batch(
-            message_count,
-            room=room,
-            writer=receiver,
-            is_read=True
-        )
-        MessageFactory.create_batch(
-            message_count,
-            room=room,
-            writer=receiver,
-            is_read=False
-        )
+        for value in [True, False]:
+            MessageFactory.create_batch(
+                message_count,
+                room=room,
+                writer=receiver,
+                is_read=value
+            )
 
         self.client.force_authenticate(user=self.user)
         response = self.call_rooms_list()
