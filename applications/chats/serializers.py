@@ -30,6 +30,10 @@ class RoomSerializer(serializers.ModelSerializer):
 
     def get_unread_message_count(self, room):
         current_user = self.context['request'].user
-        return (room.message_set.filter(is_read=False)
-                                .exclude(writer__id=current_user.id)
-                                .count())
+        return (
+            room.message_set.filter(
+                is_read=False
+            ).exclude(
+                writer__id=current_user.id
+            ).count()
+        )
