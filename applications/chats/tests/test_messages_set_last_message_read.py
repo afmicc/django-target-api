@@ -16,7 +16,7 @@ class MessagesSetLastMessageReadTest(APITestCase):
     def call_set_last_message_read(self, rooom, from_message):
         url = reverse(
             'message-set-last-message-read',
-            kwargs={'room': rooom.id, 'pk': from_message.id}
+            kwargs={'room': rooom.id, 'pk': from_message.id},
         )
         return self.client.post(url)
 
