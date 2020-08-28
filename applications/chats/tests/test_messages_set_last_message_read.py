@@ -25,7 +25,7 @@ class MessagesSetLastMessageReadTest(APITestCase):
         messages = MessageFactory.create_batch(
             messages_count,
             room=self.room,
-            writer=self.receiver
+            writer=self.receiver,
         )
         message_to_read = messages[0]
 
