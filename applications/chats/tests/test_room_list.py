@@ -72,7 +72,7 @@ class RoomListTest(APITestCase):
         room_responsed = response.json()['results'][0]
         self.assertEqual(
             room_responsed['unread_message_count'],
-            message_count
+            message_count,
         )
 
     def test_no_included_as_memeber_created_room_return_only_user_rooms(self):
