@@ -43,17 +43,17 @@ class MessagesSetLastMessageReadTest(APITestCase):
         received_messages = MessageFactory.create_batch(
             2,
             room=self.room,
-            writer=self.receiver
+            writer=self.receiver,
         )
         MessageFactory.create_batch(
             2,
             room=self.room,
-            writer=self.user
+            writer=self.user,
         )
         received_messages += MessageFactory.create_batch(
             2,
             room=self.room,
-            writer=self.receiver
+            writer=self.receiver,
         )
 
         message_to_read = received_messages[1]
@@ -78,7 +78,7 @@ class MessagesSetLastMessageReadTest(APITestCase):
         room = RoomFactory(members=[UserFactory(confirmed=True), self.receiver])
         message_to_read = MessageFactory.create(
             room=room,
-            writer=self.receiver
+            writer=self.receiver,
         )
 
         self.client.force_authenticate(user=self.user)
@@ -90,7 +90,7 @@ class MessagesSetLastMessageReadTest(APITestCase):
         room = RoomFactory(members=[UserFactory(confirmed=True), self.receiver])
         message_to_read = MessageFactory.create(
             room=room,
-            writer=self.receiver
+            writer=self.receiver,
         )
 
         self.client.force_authenticate(user=self.user)
@@ -101,7 +101,7 @@ class MessagesSetLastMessageReadTest(APITestCase):
     def test_no_logged_user_respond_unauthorized(self):
         message_to_read = MessageFactory.create(
             room=self.room,
-            writer=self.receiver
+            writer=self.receiver,
         )
 
         response = self.call_set_last_message_read(self.room, message_to_read)

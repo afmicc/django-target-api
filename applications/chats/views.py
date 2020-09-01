@@ -29,7 +29,7 @@ class MessageViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             self.get_queryset()
             .filter(is_read=False, id__lte=message.id)
             .exclude(writer__id=self.request.user.id)
-       )
+        )
         unread_messages.update(is_read=True)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
