@@ -17,7 +17,7 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         exclude = ('members', )
-        read_only_fields = ('id', 'created_at', 'topic', 'receiver', 'unread_message_count', )
+        read_only_fields = ('id', 'created_at', 'topic', 'receiver', 'unread_message_count')
 
     topic = serializers.ReadOnlyField(source='topic.name')
     receiver = serializers.SerializerMethodField()
