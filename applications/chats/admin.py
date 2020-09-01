@@ -21,7 +21,7 @@ class RoomAdmin(admin.ModelAdmin):
 
     def members_names(self, obj):
         members = obj.members.all()
-        return f'\'{members.first()}\' and \'{members.last()}\''
+        return f"'{members.first()}' and '{members.last()}'"
 
     members_names.short_description = 'members'
 
