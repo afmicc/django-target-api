@@ -44,7 +44,7 @@ class RoomListTest(APITestCase):
         self.assertEqual(len(response.data.get('results')), rooms_count)
         self.assertEqual(
             [key for key in response.json()['results'][0]],
-            ['id', 'topic', 'receiver', 'unread_message_count', 'created_at', ]
+            ['id', 'topic', 'receiver', 'unread_message_count', 'created_at'],
         )
         self.assertEqual(
             [key for key in response.json()['results'][0]['receiver']],
