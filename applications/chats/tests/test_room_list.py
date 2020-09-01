@@ -60,7 +60,7 @@ class RoomListTest(APITestCase):
                 message_count,
                 room=room,
                 writer=receiver,
-                is_read=value
+                is_read=value,
             )
 
         self.client.force_authenticate(user=self.user)
