@@ -1,21 +1,31 @@
 from django.db import transaction
+
+from channels.db import database_sync_to_async
 import environ
-from onesignal_sdk.client import Client as OneSignalClient
+from onesignal_sdk.client import Client as OneSignalClient, AsyncClient as OneSignalAsyncClient
 
 from .models import Notification
 
 env = environ.Env()
 
 
-class NotificationSender(object):
-    client = OneSignalClient(
-        app_id=env('ONESIGNAL_APP_ID'),
-        rest_api_key=env('ONESIGNAL_API_KEY'),
-    )
+class NotificationSender:
+    client_params = {
+        'app_id': env('ONESIGNAL_APP_ID'),
+        'rest_api_key': env('ONESIGNAL_API_KEY'),
+    }
 
     def send_notification(self, emails, data, message):
         body = self._body(emails, data, message)
-        self.client.send_notification(body)
+
+        client = OneSignalClient(**self.client_params)
+        client.send_notification(body)
+
+    async def send_notification_async(self, emails, data, message):
+        body = self._body(emails, data, message)
+
+        client = OneSignalAsyncClient(**self.client_params)
+        await client.send_notification(body)
 
     def _body(self, emails, data, message):
         return {
@@ -44,3 +54,10 @@ class NotificationCreator:
         Notification.objects.create(user=user, title=title, message=message)
 
         self.sender.send_notification(user.email, data, message)
+
+    async def create_async(self, user, data, title, message):
+        await database_sync_to_async(
+            Notification.objects.create
+        )(user=user, title=title, message=message)
+
+        await self.sender.send_notification_async(user.email, data, message)
